@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Simple To Do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <style>
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #c7b064, #FFC2E2);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: gradientAnimation 8s ease infinite;
+            background-size: 200% 200%;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            width: 40%;
+            min-width: 450px;
+            padding: 30px 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #newtask input {
+            width: 70%;
+            height: 45px;
+            font-size: 15px;
+            border: 2px solid #EAEAEA;
+            padding: 12px;
+            color: #4A4A4A;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+        }
+        #newtask input:focus {
+            outline: none;
+            border-color: #00C8B3;
+        }
+        #newtask button {
+            float: right;
+            width: 20%;
+            height: 45px;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #00C8B3;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        #newtask button:active {
+            transform: scale(0.95);
+        }
+        #newtask button:hover {
+            background-color: #00A698;
+        }
+        #tasks {
+            margin-top: 30px;
+        }
+        .task {
+            background-color: #F9F9F9;
+            height: 50px;
+            padding: 10px 15px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            animation: fadeInTask 0.3s ease;
+            transition: background-color 0.3s ease;
+        }
+        @keyframes fadeInTask {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .task:hover {
+            background-color: #F0F0F0;
+        }
+        .task span {
+            font-size: 25px;
+            font-weight: 500;
+            color: #4A4A4A;
+        }
+        .task button {
+            background-color: #FF6363;
+            color: white;
+            height: 100%;
+            width: 40px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .task button:hover {
+            background-color: #E55656;
+        }
+        .task button:active {
+            transform: scale(0.9);
+        }
+        .completed span {
+            text-decoration: line-through;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="newtask">
+            <input type="text" placeholder="Task to be done..">
+            <button id="push">Add</button>
+        </div>
+        <div id="tasks"></div>
+    </div>
+
+    <script>
+        document.querySelector('#push').onclick = function () {
+            if (document.querySelector('#newtask input').value.length == 0) {
+                alert("Please Enter a Task");
+            } else {
+                const newTask = `
+                    <div class="task">
+                        <span id="taskname">
+                            ${document.querySelector('#newtask input').value}
+                        </span>
+                        <button class="delete">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                document.querySelector('#tasks').insertAdjacentHTML('beforeend', newTask);
+
+                let current_tasks = document.querySelectorAll(".delete");
+                current_tasks.forEach(task => {
+                    task.onclick = function () {
+                        this.parentNode.style.opacity = "0";
+                        setTimeout(() => {
+                            this.parentNode.remove();
+                        }, 300);
+                    };
+                });
+
+                let tasks = document.querySelectorAll(".task");
+                tasks.forEach(task => {
+                    task.onclick = function () {
+                        this.classList.toggle('completed');
+                    };
+                });
+
+                document.querySelector("#newtask input").value = "";
+            }
+        }
+    </script>
+</body>
+</html>
